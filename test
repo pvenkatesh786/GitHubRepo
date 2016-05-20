@@ -1,0 +1,5 @@
+#!this is my first gitscript.
+
+echo "Enter your name"
+read name
+echo "Hi your name is $name, Good luck for your new script"
