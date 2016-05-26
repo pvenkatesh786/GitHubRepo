@@ -1,27 +1,30 @@
 #!/bin/bash
-# This script is used to Stop and Start the Tomcat Service
+HOME=/u01/tomcat
+PID=`ps -ef | grep catalina | grep -v grep | awk '{print $2}'`
+echo "The Current running PID is : $PID"
 
-pid=ps -ef | grep java | grep -v grep | awk '{print $2}'
-
-if [ -z $pid ]
+if [ -z $PID ]
 then
-        echo "Starting Tomcat"
-        /usr/apache/apache-tomcat-9.0.0.M3/bin/startup.sh
-else
-        echo "Stoping Tomcat"
-        /usr/apache/apache-tomcat-9.0.0.M3/bin/shutdown.sh
-        sleep 20
-        pid=ps -ef | grep java | grep -v grep | awk '{print $2}'
-        if [ -z $pid ]
-        then
-                echo "Starting Tomcat"
-                /usr/apache/apache-tomcat-9.0.0.M3/bin/startup.sh
-
-        else
-                echo "unable to shutdown tomcat, need to kill $pid"
-                kill -9 $pid
-                echo "Starting Tomcat"
-               /usr/apache/apache-tomcat-9.0.0.M3/bin/startup.sh
-        fi
+	echo "Starting Tomcat Service"
+	$HOME/bin/startup.sh
+else 
+	echo "Shutdowning Tomcat Service"
+	$HOME/bin/shutdown.sh
+	sleep 60
+	PID=`ps -ef | grep catalina | grep -v grep | awk '{print $2}'`
+	if [ -z $PID ]
+	then
+		echo "Starting Tomcat Service"
+		$HOME/bin/startup.sh
+	else
+		echo "We are unable to shutdown tomcat service, need to kill process id : $PID"
+		kill -9 $PID
+		echo "Starting tomcat service"
+		$HOME=/bin/startup.sh
+		PID=`ps -ef | grep catalina | grep -v grep | awk '{print $2}'`
+		echo "Currnet running process PID is : $PID"
+	fi
 fi
+		
+
 
