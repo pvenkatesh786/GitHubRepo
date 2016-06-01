@@ -1,14 +1,14 @@
-LIMIT=19 # Upper limit
-echo
-echo "Printing Numbers 1 through 20 (but not 3 and 11)."
+#!/bin/bash
 
 a=0
-while [ $a -le "$LIMIT" ]
+echo "Going to print 1 to 10 except 2 and 5"
+while [ $a -lt 10 ]
 do
-	a=$(($a+1))
-	if [ "$a" -eq 3 ] || [ "$a" -eq 11 ] # Excludes 3 and 11.
-	then
-		continue # Skip rest of this particular loop iteration.
-	fi
-	echo -n "$a " # This will not execute for 3 and 11.
+	a=`expr $a + 1`
+	if [ $a -eq 2 ] || [ $a -eq 5 ]
+	then 
+		continue
+	else 
+		echo  $a
+ 	fi
 done
