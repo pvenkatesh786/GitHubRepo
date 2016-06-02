@@ -19,11 +19,11 @@ case $option in
         ps -ef | grep catalina | grep -v grep
         ;;
 2|start)
-        echo "You want to start Tomcat Service"
+        echo "Starting Tomcat Service"
         $HOME/bin/startup.sh
         ;;
 3|stop)
-        echo "You want to stop Tomcat Service"
+        echo "Shutdowning Tomcat Service"
         $HOME/bin/shutdown.sh
         ;;
 4|restart)
@@ -34,7 +34,7 @@ case $option in
         else
                 echo "Shutdowning Tomcat Service"
                 $HOME/bin/shutdown.sh
-                sleep 10
+                sleep 60
                 PID=`ps -ef | grep catalina | grep -v grep | awk '{print $2}'`
                 if [ -z $PID ]
                 then
