@@ -1,0 +1,24 @@
+#!/bin/bash
+
+disk_space=`df -h / | awk '{print $4}' | tail -1 | sed s/G//`
+process_count=`ps ux | grep docker-containerd | wc -l`
+echo ${disk_space%%.*}
+echo $process_count
+if [ ${disk_space%%.*} -gt 5 ]
+then
+  echo "Disk Space is $disk_space which is more than 5"
+  echo "Checking for process....."
+  if [ $process_count -gt 0 ]
+  then
+   /usr/bin/pkill -9 -f docker-containerd & >> /opt/script.log
+   cd /opt && touch script-testing && chmod 777 script-testing
+   /usr/bin/rm script-testing
+   #/home/hybfunc/plab/ShopPerlLoadDriver/start_test.sh /home/hybfunc/plab/ShopPerlLoadDriver/shp_cfg/ctx_daily.cfg mip miph is hpis &> /home/hybfunc/plab/ShopPerlLoadDriver/daily_exec.log
+  else
+   echo "Deleteing 1 day older files..."
+   #/bin/find /home/hybfunc/plab/ShopPerlLoadDriver/log -mtime 1 –delete
+  fi
+else
+  echo "bye"
+fi
+echo "After Deleting Older files current Disk Space is `df -h / | awk '{print $4}' | tail -1` "
